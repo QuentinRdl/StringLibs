@@ -118,11 +118,53 @@ const char *str_search_last_char(char needle, const char *haystack) {
  * bytes in chars.
  */
 size_t str_prefix_accept(const char *str, const char *chars) {
-  return 0;
+  size_t count = 0;
+  int condition = 0;
+  while(*str)
+  {
+    const char *copyChars = chars;
+    while(*copyChars)
+    {
+      if(*copyChars == *str)
+      {
+        condition = 1;
+      }
+      copyChars++;
+    }
+    if(!condition)
+    {
+      return count;
+    }
+    condition = 0;
+    count++;
+    str++;
+  }
+  return count;
 }
 
 size_t str_prefix_reject(const char *str, const char *chars) {
-  return 0;
+  size_t count = 0;
+  int condition = 0;
+  while(*str)
+  {
+    const char *copyChars = chars;
+    while(*copyChars)
+    {
+      if(*copyChars == *str)
+      {
+        condition = 1;
+      }
+      copyChars++;
+    }
+    if(condition)
+    {
+      return count;
+    }
+    condition = 0;
+    count++;
+    str++;
+  }
+  return count;
 }
 /*
  * Transform a string with a base-10 number into an integer.
