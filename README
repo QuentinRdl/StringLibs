@@ -1,0 +1,11 @@
+To compile:
+
+    make
+
+To run the tests:
+
+    ./stringslib
+
+To clean the project:
+
+    make clean
