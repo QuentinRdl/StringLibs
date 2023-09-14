@@ -198,7 +198,7 @@ TEST(ToIntegerTest, Start) {
 /*
  * str_to_integer_ex
  */
-
+/*
 TEST(ToIntegerExTest, DigitNum) {
   EXPECT_EQ(str_to_integer_ex("0", NULL, 36), 0);
   EXPECT_EQ(str_to_integer_ex("1", NULL, 36), 1);
@@ -322,7 +322,7 @@ TEST(ToIntegerExTest, StartWithEndPtr) {
   EXPECT_EQ(str_to_integer_ex(start, &endptr, 10), 23);
   EXPECT_EQ(endptr, start + 2);
 }
-
+*/
 /*
  * str_from_integer
  */

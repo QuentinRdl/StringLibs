@@ -141,7 +141,10 @@ size_t str_prefix_accept(const char *str, const char *chars) {
   }
   return count;
 }
-
+/*
+ * Calculates the length of the initial segment of str which consists entirely of
+ * bytes *not* in chars.
+ */
 size_t str_prefix_reject(const char *str, const char *chars) {
   size_t count = 0;
   int condition = 0;
@@ -183,17 +186,71 @@ int str_to_integer(const char *str) {
   return count;
 }
 
-
+/*
+ * Transform a string with a number into an integer.
+ * The base argument contains the base of the representation, from 2 to 36.
+ * For a base greater than 10, latin letters (uppercase or lowercase) are used.
+ * Returns the number or 0 if the string does not start with a number.
+ * If endptr is not NULL, the function stores the address of the first invalid character.
+ */
 int str_to_integer_ex(const char *str, const char **endptr, int base) {
   return 0;
 }
 
+/*
+ * Transform an integer into a string.
+ * The destination buffer has a length of size bytes. If there
+ * is not enough space in the buffer, the result is truncated.
+ */
 void str_from_integer(char *dest, size_t size, int n) {
+  char *destCopy = dest;
+  int numberOfDigits = 0;
+  int nCopy = n;
+  // We count the number of digits
+  do
+  {
+    nCopy = nCopy / 10;
+    numberOfDigits++;
+  } while(nCopy);
+  // We now convert the digits into char in a list
+  char *temp = (char *)malloc((numberOfDigits + 1) * sizeof(char));
+  for(int i = 0; i < numberOfDigits; i++)
+  {
+    *temp = n % 10 + '0';
+    temp++;
+    n = n / 10;
+  }
+  *temp = '\0';
+
+  // Now we inverse the temp list into the dest until we can't
+  for(size_t i = 0; i < size; i++)
+  {
+    
+  }
+
+  *dest = '\0';
+  free(temp);
 }
 
+/*
+ * Make a copy of a string.
+ * The destination buffer has a length of size bytes. If there
+ * is not enough space in the buffer, the result is truncated.
+ */
 void str_copy(char *dest, size_t size, const char *str) {
+  for(size_t i = 0; i < size - 1 && *str != '\0'; i++)
+  {
+    *dest = *str;
+    dest++;
+    str++;
+  }
+  *dest = '\0';
 }
 
+/*
+ * Duplicate a string.
+ * Returns a copy of the argument, allocated with malloc or calloc.
+ */
 char *str_duplicate(const char *str) {
   return NULL;
 }
