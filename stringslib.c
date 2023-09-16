@@ -9,17 +9,17 @@
  * Get the size of the string.
  */
 size_t str_length(const char *str) {
-  if(str == NULL)
-  {
-    return 0; // If the string is NULL.
-  }
-  size_t count = 0;
-  // We increment our count until the char is '\0' meaning it's the last char of the String.
-  while(str[count] != '\0')
-  {
-    count ++;
-  }
-  return count;
+    if(str == NULL)
+    {
+        return 0; // If the string is NULL.
+    }
+    size_t count = 0;
+    // We increment our count until the char is '\0' meaning it's the last char of the String.
+    while(str[count] != '\0')
+        {
+            count ++;
+        }
+    return count;
 }
 /*
  * Compare two strings lexicographically.
@@ -29,23 +29,23 @@ size_t str_length(const char *str) {
  *   - > 0 if str1 is after str2
  */
 int str_compare(const char *str1, const char *str2) {
-  int count = 0;
-  int valueStr1, valueStr2;
-  // We iterate through the while statement until str1 and str2 are different or one str ends
-  while(str1[count] == str2[count] && str1[count] != '\0' && str2[count] != '\0')
-  {
-    count++;
-  }
-  valueStr1 = str1[count];
-  valueStr2 = str2[count];
-  /*
+    int count = 0;
+    int valueStr1, valueStr2;
+    // We iterate through the while statement until str1 and str2 are different or one str ends
+    while(str1[count] == str2[count] && str1[count] != '\0' && str2[count] != '\0')
+        {
+            count++;
+        }
+    valueStr1 = str1[count];
+    valueStr2 = str2[count];
+    /*
   * If the ascii value of str1 is lower than str2, then str1 comes before str2 in the alphabet
   * and valueStr1 - valueStr2 will be less than 0.
   * If the ascii str2 if greater than str1 then it would be the opposite and valueStr1 - valueStr2
   * will be greater than 0.
   * And if they are the same, then valueStr1 - valueStr2 will be equal to 0.
   */
-  return valueStr1 - valueStr2;
+    return valueStr1 - valueStr2;
 }
 
 /*
@@ -55,24 +55,24 @@ int str_compare(const char *str1, const char *str2) {
  */
 const char *str_search(const char *needle, const char *haystack) {
 
-  while (*haystack != '\0')
-  {
-    const char *needleCopy = needle;
-    const char *haystackCopy = haystack;
-    while(*needleCopy == *haystackCopy && *needleCopy != '\0')
-    {
-      needleCopy ++;
-      haystackCopy ++;
-    }
-    if (*needleCopy == '\0')
-    {
-      return haystack;
-    }
+    while (*haystack != '\0')
+        {
+            const char *needleCopy = needle;
+            const char *haystackCopy = haystack;
+            while(*needleCopy == *haystackCopy && *needleCopy != '\0')
+                {
+                    needleCopy ++;
+                    haystackCopy ++;
+                }
+            if (*needleCopy == '\0')
+            {
+                return haystack;
+            }
 
-    haystack ++;
-  }
-  
-  return NULL;
+            haystack ++;
+        }
+
+    return NULL;
 }
 
 /*
@@ -81,17 +81,17 @@ const char *str_search(const char *needle, const char *haystack) {
  * or NULL if the character is not in the string.
  */
 const char *str_search_first_char(char needle, const char *haystack) {
-  // We iterate through our haystack until we reach the end or until we find the needle
-  while(*haystack != '\0')
-  {
-    if(*haystack == needle)
-    {
-      return haystack;
-    }
-    haystack++;
-  }
-  
-  return NULL;
+    // We iterate through our haystack until we reach the end or until we find the needle
+    while(*haystack != '\0')
+        {
+            if(*haystack == needle)
+            {
+                return haystack;
+            }
+            haystack++;
+        }
+
+    return NULL;
 }
 /*
  * Search for a character in the string.
@@ -99,18 +99,18 @@ const char *str_search_first_char(char needle, const char *haystack) {
  * or NULL if the character is not in the string.
  */ 
 const char *str_search_last_char(char needle, const char *haystack) {
-  const char *lastPos = NULL;
-  // We iterate through our haystack until we reach the end or until we find the needle
-  while(*haystack != '\0')
-  {
-    if(*haystack == needle)
-    {
-      lastPos = haystack;
-    }
-    haystack++;
-  }
-  
-  return lastPos;
+    const char *lastPos = NULL;
+    // We iterate through our haystack until we reach the end or until we find the needle
+    while(*haystack != '\0')
+        {
+            if(*haystack == needle)
+            {
+                lastPos = haystack;
+            }
+            haystack++;
+        }
+
+    return lastPos;
 }
 
 /*
@@ -118,72 +118,72 @@ const char *str_search_last_char(char needle, const char *haystack) {
  * bytes in chars.
  */
 size_t str_prefix_accept(const char *str, const char *chars) {
-  size_t count = 0;
-  int condition = 0;
-  while(*str)
-  {
-    const char *copyChars = chars;
-    while(*copyChars)
-    {
-      if(*copyChars == *str)
-      {
-        condition = 1;
-      }
-      copyChars++;
-    }
-    if(!condition)
-    {
-      return count;
-    }
-    condition = 0;
-    count++;
-    str++;
-  }
-  return count;
+    size_t count = 0;
+    int condition = 0;
+    while(*str)
+        {
+            const char *copyChars = chars;
+            while(*copyChars)
+                {
+                    if(*copyChars == *str)
+                    {
+                        condition = 1;
+                    }
+                    copyChars++;
+                }
+            if(!condition)
+            {
+                return count;
+            }
+            condition = 0;
+            count++;
+            str++;
+        }
+    return count;
 }
 /*
  * Calculates the length of the initial segment of str which consists entirely of
  * bytes *not* in chars.
  */
 size_t str_prefix_reject(const char *str, const char *chars) {
-  size_t count = 0;
-  int condition = 0;
-  while(*str)
-  {
-    const char *copyChars = chars;
-    while(*copyChars)
-    {
-      if(*copyChars == *str)
-      {
-        condition = 1;
-      }
-      copyChars++;
-    }
-    if(condition)
-    {
-      return count;
-    }
-    condition = 0;
-    count++;
-    str++;
-  }
-  return count;
+    size_t count = 0;
+    int condition = 0;
+    while(*str)
+        {
+            const char *copyChars = chars;
+            while(*copyChars)
+                {
+                    if(*copyChars == *str)
+                    {
+                        condition = 1;
+                    }
+                    copyChars++;
+                }
+            if(condition)
+            {
+                return count;
+            }
+            condition = 0;
+            count++;
+            str++;
+        }
+    return count;
 }
 /*
  * Transform a string with a base-10 number into an integer.
  * Returns the number or 0 if the string does not start with a number.
  */
 int str_to_integer(const char *str) {
-  int count = 0;
-  while(*str)
-  {
-    if(*str >= '0' && *str <= '9')
-    {
-      count = count * 10 + (*str - '0');
-    }
-    str++;
-  }
-  return count;
+    int count = 0;
+    while(*str)
+        {
+            if(*str >= '0' && *str <= '9')
+            {
+                count = count * 10 + (*str - '0');
+            }
+            str++;
+        }
+    return count;
 }
 
 /*
@@ -194,7 +194,7 @@ int str_to_integer(const char *str) {
  * If endptr is not NULL, the function stores the address of the first invalid character.
  */
 int str_to_integer_ex(const char *str, const char **endptr, int base) {
-  return 0;
+    return 0;
 }
 
 /*
@@ -203,33 +203,35 @@ int str_to_integer_ex(const char *str, const char **endptr, int base) {
  * is not enough space in the buffer, the result is truncated.
  */
 void str_from_integer(char *dest, size_t size, int n) {
-  char *destCopy = dest;
-  int numberOfDigits = 0;
-  int nCopy = n;
-  // We count the number of digits
-  do
-  {
-    nCopy = nCopy / 10;
-    numberOfDigits++;
-  } while(nCopy);
-  // We now convert the digits into char in a list
-  char *temp = (char *)malloc((numberOfDigits + 1) * sizeof(char));
-  for(int i = 0; i < numberOfDigits; i++)
-  {
-    *temp = n % 10 + '0';
-    temp++;
-    n = n / 10;
-  }
-  *temp = '\0';
+    if (size == 0 || n < 0) 
+	{
+        dest[0] = '\0';
+        return;
+    }
 
-  // Now we inverse the temp list into the dest until we can't
-  for(size_t i = 0; i < size; i++)
-  {
-    
-  }
+    // We calculate the number of digits
+    int numberOfDigits = 0;
+    int nCopy = n;
+    do 
+	{
+    	nCopy = nCopy / 10;
+        numberOfDigits++;
+    } while(nCopy);
 
-  *dest = '\0';
-  free(temp);
+    // We ensure that there is enough space in the buffer
+    if(size <= (size_t)numberOfDigits)
+	{
+        numberOfDigits = size - 1;
+    }
+
+    // We convert the digits into characters in reverse order
+    for(int i = numberOfDigits - 1; i >= 0; i--)
+	{
+        dest[i] = n % 10 + '0';
+        n = n / 10;
+    }
+
+    dest[numberOfDigits] = '\0';
 }
 
 /*
@@ -238,13 +240,14 @@ void str_from_integer(char *dest, size_t size, int n) {
  * is not enough space in the buffer, the result is truncated.
  */
 void str_copy(char *dest, size_t size, const char *str) {
-  for(size_t i = 0; i < size - 1 && *str != '\0'; i++)
-  {
-    *dest = *str;
-    dest++;
-    str++;
-  }
-  *dest = '\0';
+    for(size_t i = 0; i < size - 1 && *str != '\0'; i++)
+        {
+            *dest = *str;
+            dest++;
+            str++;
+        }
+    *dest = '\0';
+	
 }
 
 /*
@@ -252,7 +255,7 @@ void str_copy(char *dest, size_t size, const char *str) {
  * Returns a copy of the argument, allocated with malloc or calloc.
  */
 char *str_duplicate(const char *str) {
-  return NULL;
+    return NULL;
 }
 
 void str_concat_string(char *dest, size_t size, const char *str) {
@@ -268,9 +271,9 @@ void str_concat_array(char *dest, size_t size, const char *args[], char separato
 }
 
 char *str_join_string(const char *str1, const char *str2, char separator) {
-  return NULL;
+    return NULL;
 }
 
 char *str_join_array(const char *args[], char separator) {
-  return NULL;
+    return NULL;
 }
