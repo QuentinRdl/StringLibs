@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+int powerOfTen(int exp);
 /*
  * Get the size of the string.
  */
@@ -203,7 +204,7 @@ int str_to_integer_ex(const char *str, const char **endptr, int base) {
  * is not enough space in the buffer, the result is truncated.
  */
 void str_from_integer(char *dest, size_t size, int n) {
-    if (size == 0 || n < 0) 
+        if (size == 0 || n < 0) 
 	{
         dest[0] = '\0';
         return;
@@ -350,16 +351,91 @@ void str_concat_integer(char *dest, size_t size, int n) {
 	}
 	// We add the
 	*dest = '\0';
-	free(digitsStr);
+
 }
 
+
+/*
+ * Concatenate an array of strings to an existing string.
+ * A separator is added between the existing string and each string in the array.
+ * The end of the array is identified by NULL.
+ * The destination buffer has a length of size bytes. If there
+ * is not enough space in the buffer, the result is truncated.
+ */
 void str_concat_array(char *dest, size_t size, const char *args[], char separator) {
+
+    size_t dest_len = str_length(dest);
+    size_t remaining_space = size - dest_len;
+
+    if (remaining_space <= 1) {
+        return;
+    }
+
+    // Iterate through the array of strings and concatenate them with the separator.
+    for (const char **arg = args; *arg != NULL; ++arg) {
+        size_t arg_len = str_length(*arg);
+
+        // Check if there's enough space for the separator and the current string.
+        if (remaining_space <= (arg_len + 1)) {
+            // Not enough space to add the separator and the current string.
+            break;
+        }
+
+        // Add the separator and the current string.
+        if (dest_len > 0) {
+            dest[dest_len++] = separator;
+            --remaining_space;
+        }
+
+        // Copy characters from the current string to the destination.
+        for (size_t i = 0; i < arg_len && remaining_space > 0; ++i) {
+            dest[dest_len++] = (*arg)[i];
+            --remaining_space;
+        }
+    }
+
+    // Null-terminate the resulting string.
+    dest[dest_len] = '\0';
 }
 
+
+/*
+ * Join two strings in a new string with a separator.
+ * Returns a new string allocated with malloc or calloc.
+ */
 char *str_join_string(const char *str1, const char *str2, char separator) {
-    return NULL;
+    // We determine the length of final string + 2 for the separator and null terminator.
+    char *strFinal = (char *)malloc(str_length(str1) + str_length(str2) + 2);
+    char *tempPointer = strFinal;
+    while(*str1){
+        *strFinal = *str1;
+        str1++;
+        strFinal++;
+    }
+    *strFinal = separator; // We add the separator.
+    strFinal++;
+    while(*str2)
+    {
+        *strFinal = *str2;
+        str2++;
+        strFinal++;
+    }
+    *strFinal = '\0'; // We add the null terminator.
+
+    return tempPointer;
 }
 
 char *str_join_array(const char *args[], char separator) {
     return NULL;
+}
+
+int powerOfTen(int exp)
+{
+    int result = 1;
+    while (exp > 0)
+    {
+        result = result * 10;
+        exp--;
+    }
+    return result;
 }
