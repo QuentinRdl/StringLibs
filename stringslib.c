@@ -255,9 +255,28 @@ void str_copy(char *dest, size_t size, const char *str) {
  * Returns a copy of the argument, allocated with malloc or calloc.
  */
 char *str_duplicate(const char *str) {
-    return NULL;
+	size_t lenOfStr = str_length(str); // We find the length of the initial str
+	char *str_copy = (char *)malloc(lenOfStr + 1);
+	if (str_copy == NULL)
+	{
+		return NULL;
+	}
+	char *temp = str_copy;
+	while(*str != '\0')
+	{
+		*temp= *str;
+		temp++;
+		str++;
+	}
+	*temp = '\0';
+    return str_copy;
 }
 
+/*
+ * Concatenate a string to an existing string.
+ * The destination buffer has a length of size bytes. If there
+ * is not enough space in the buffer, the result is truncated.
+ */
 void str_concat_string(char *dest, size_t size, const char *str) {
 }
 
