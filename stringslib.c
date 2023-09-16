@@ -278,6 +278,21 @@ char *str_duplicate(const char *str) {
  * is not enough space in the buffer, the result is truncated.
  */
 void str_concat_string(char *dest, size_t size, const char *str) {
+	size_t count = 0;
+	while(*dest)
+	{
+		dest++;
+		count++;
+	}
+	while(count < size - 1 && *str != '\0')
+	{
+		*dest = *str;
+		dest++;
+		str++;
+		count++;
+	}
+	*dest = '\0';
+
 }
 
 void str_concat_char(char *dest, size_t size, char c) {
