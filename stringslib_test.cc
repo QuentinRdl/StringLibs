@@ -526,7 +526,7 @@ TEST(ConcatStringTest, FullDest) {
 }
 
 /*
- * str_concat_char
+ *  
  */
 
 TEST(ConcatCharTest, Simple) {

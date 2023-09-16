@@ -316,7 +316,41 @@ void str_concat_char(char *dest, size_t size, char c) {
 	}
 }
 
+/*
+ * Concatenate an integer to an existing string.
+ * The destination buffer has a length of size bytes. If there
+ * is not enough space in the buffer, the result is truncated.
+ */
 void str_concat_integer(char *dest, size_t size, int n) {
+	size_t nbOfElementsInStr = 0;
+	while(*dest)
+	{
+		dest++;
+		nbOfElementsInStr++;
+	}
+	// We count the number of digits in n
+	size_t nbOfDigits = 0;
+	int nCopy = n;
+	while(nCopy)
+	{
+		nCopy = nCopy / 10;
+		nbOfDigits++;
+	}
+	// We convert the digits in a str
+	char *digitsStr = (char *)malloc(nbOfDigits + 1);
+	str_from_integer(digitsStr, nbOfDigits, n);
+
+	// We copy the elements of the digits str to the dest str
+	while(nbOfElementsInStr < size - 1 && *digitsStr != '\0')
+	{
+		*dest = digitsStr[nbOfDigits];
+		dest++;
+		digitsStr++;
+		nbOfElementsInStr;
+	}
+	// We add the
+	*dest = '\0';
+	free(digitsStr);
 }
 
 void str_concat_array(char *dest, size_t size, const char *args[], char separator) {
