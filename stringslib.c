@@ -295,7 +295,25 @@ void str_concat_string(char *dest, size_t size, const char *str) {
 
 }
 
+/*
+ * Concatenate a character to an existing string.
+ * The destination buffer has a length of size bytes. If there
+ * is not enough space in the buffer, the result is truncated.
+ */
 void str_concat_char(char *dest, size_t size, char c) {
+	size_t count = 0;
+	while(*dest)
+	{
+		dest++;
+		count++;
+	}
+	
+	if(count < size - 1)
+	{
+		*dest = c;
+		dest++;
+		*dest = '\0';
+	}
 }
 
 void str_concat_integer(char *dest, size_t size, int n) {
