@@ -426,7 +426,36 @@ char *str_join_string(const char *str1, const char *str2, char separator) {
 }
 
 char *str_join_array(const char *args[], char separator) {
-    return NULL;
+    // We will figure out how many strings, and chars are stored in the array.
+    int numStrings = 0;
+    int numChar = 0;
+    while(args[numStrings] != NULL)
+    {
+        const char *currentString = args[numStrings];
+        numChar = numChar + str_length(currentString);
+        numStrings++;
+    }
+    char *result = (char *)malloc(numChar + 1); // We create the string we will return.
+    char *resultStart = result;
+    int numStrings2 = 0;
+    while(args[numStrings2] != NULL)
+    {
+        const char *currentString2 = args[numStrings2];
+        int index = 0;
+        while(currentString2[index] != '\0')
+        {
+            *result = currentString2[index];
+            index++;
+            result++;
+        }
+        if (args[numStrings2 + 1] != NULL) {
+            *result = separator;
+            result++;
+        }
+        numStrings2++;
+    }
+    *result = '\0';
+    return resultStart;
 }
 
 int powerOfTen(int exp)
