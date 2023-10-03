@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-int powerOfTen(int exp);
 /*
  * Get the size of the string.
  */
@@ -150,24 +149,24 @@ size_t str_prefix_reject(const char *str, const char *chars) {
     size_t count = 0;
     int condition = 0;
     while(*str)
-        {
-            const char *copyChars = chars;
-            while(*copyChars)
-                {
-                    if(*copyChars == *str)
-                    {
-                        condition = 1;
-                    }
-                    copyChars++;
-                }
-            if(condition)
+    {
+        const char *copyChars = chars;
+        while(*copyChars)
             {
-                return count;
+                if(*copyChars == *str)
+                {
+                    condition = 1;
+                }
+                copyChars++;
             }
-            condition = 0;
-            count++;
-            str++;
+        if(condition)
+        {
+            return count;
         }
+        condition = 0;
+        count++;
+        str++;
+    }
     return count;
 }
 /*
@@ -195,7 +194,43 @@ int str_to_integer(const char *str) {
  * If endptr is not NULL, the function stores the address of the first invalid character.
  */
 int str_to_integer_ex(const char *str, const char **endptr, int base) {
-    return 0;
+    int value = 0;
+    int valueOfChar = 0;
+    int i = 0;
+    // We iterate through our str
+    while(*str)
+    {
+        // We convert the value of the char to an int.
+        if(*str >= '0' && *str <= '9') 
+        {
+            valueOfChar = *str - '0';
+        }
+        else if(*str >= 'a' && *str <= 'z')
+        {
+            valueOfChar = *str - 'a' + 10;
+        }
+        else if(*str >= 'A' && *str <= 'Z')
+        {
+            valueOfChar = *str - 'A' + 10;
+        }
+        else
+        {
+            break;
+        }
+        if(valueOfChar >= base)
+        {
+            break;
+        }
+        value = value * base + valueOfChar;
+        str++;
+         
+    }
+    if(endptr != NULL)
+    {
+        *endptr = str + i; 
+
+    }
+    return value;
 }
 
 /*
@@ -204,35 +239,36 @@ int str_to_integer_ex(const char *str, const char **endptr, int base) {
  * is not enough space in the buffer, the result is truncated.
  */
 void str_from_integer(char *dest, size_t size, int n) {
-        if (size == 0 || n < 0) 
+    if (size == 0 || n < 0) 
 	{
         dest[0] = '\0';
         return;
     }
 
     // We calculate the number of digits
-    int numberOfDigits = 0;
+    int numberOfDigits = 1;
     int nCopy = n;
-    do 
+    while(nCopy > 9)
 	{
     	nCopy = nCopy / 10;
         numberOfDigits++;
-    } while(nCopy);
+    };
 
     // We ensure that there is enough space in the buffer
-    if(size <= (size_t)numberOfDigits)
+    while(size <= (size_t)numberOfDigits)
 	{
-        numberOfDigits = size - 1;
+        numberOfDigits = numberOfDigits - 1;
+        n = n / 10;
     }
-
+    dest[numberOfDigits] = '\0';
     // We convert the digits into characters in reverse order
-    for(int i = numberOfDigits - 1; i >= 0; i--)
+    int i = numberOfDigits;
+    while(i > 0)
 	{
+        i--;
         dest[i] = n % 10 + '0';
         n = n / 10;
     }
-
-    dest[numberOfDigits] = '\0';
 }
 
 /*
@@ -248,7 +284,6 @@ void str_copy(char *dest, size_t size, const char *str) {
             str++;
         }
     *dest = '\0';
-	
 }
 
 /*
@@ -257,7 +292,12 @@ void str_copy(char *dest, size_t size, const char *str) {
  */
 char *str_duplicate(const char *str) {
 	size_t lenOfStr = str_length(str); // We find the length of the initial str
-	char *str_copy = (char *)malloc(lenOfStr + 1);
+	char *str_copy = (char *)malloc((lenOfStr + 1) * sizeof(char));
+    if(str_copy == NULL)
+    {
+        printf("Memory not available");
+        return 0; 
+    }
 	if (str_copy == NULL)
 	{
 		return NULL;
@@ -323,37 +363,29 @@ void str_concat_char(char *dest, size_t size, char c) {
  * is not enough space in the buffer, the result is truncated.
  */
 void str_concat_integer(char *dest, size_t size, int n) {
-	size_t nbOfElementsInStr = 0;
-	while(*dest)
-	{
-		dest++;
-		nbOfElementsInStr++;
-	}
-	// We count the number of digits in n
-	size_t nbOfDigits = 0;
-	int nCopy = n;
-	while(nCopy)
-	{
-		nCopy = nCopy / 10;
-		nbOfDigits++;
-	}
-	// We convert the digits in a str
-	char *digitsStr = (char *)malloc(nbOfDigits + 1);
-	str_from_integer(digitsStr, nbOfDigits, n);
+    if (dest != NULL)
+    {
+        int length = 1;
+        int nCopy = n;
+        // We determine the length of the string that will hold our digits 
+        while(nCopy > 9) 
+        {
+            nCopy /= 10;
+            length++;
+        }
+        char *digitsStored = malloc((length + 1) * sizeof(char));
+        if(digitsStored == NULL)
+        {
+            printf("Memory not available");
+            return;
+        }
+        str_from_integer(digitsStored, length + 1, n); // We convert our digits to a string
+        str_concat_string(dest, size, digitsStored); // We concat our dest str to the digits str
+        free(digitsStored);
+    } 
 
-	// We copy the elements of the digits str to the dest str
-	while(nbOfElementsInStr < size - 1 && *digitsStr != '\0')
-	{
-		*dest = digitsStr[nbOfDigits];
-		dest++;
-		digitsStr++;
-		nbOfElementsInStr;
-	}
-	// We add the
-	*dest = '\0';
 
 }
-
 
 /*
  * Concatenate an array of strings to an existing string.
@@ -364,38 +396,15 @@ void str_concat_integer(char *dest, size_t size, int n) {
  */
 void str_concat_array(char *dest, size_t size, const char *args[], char separator) {
 
-    size_t dest_len = str_length(dest);
-    size_t remaining_space = size - dest_len;
-
-    if (remaining_space <= 1) {
-        return;
-    }
-
-    // Iterate through the array of strings and concatenate them with the separator.
-    for (const char **arg = args; *arg != NULL; ++arg) {
-        size_t arg_len = str_length(*arg);
-
-        // Check if there's enough space for the separator and the current string.
-        if (remaining_space <= (arg_len + 1)) {
-            // Not enough space to add the separator and the current string.
-            break;
-        }
-
-        // Add the separator and the current string.
-        if (dest_len > 0) {
-            dest[dest_len++] = separator;
-            --remaining_space;
-        }
-
-        // Copy characters from the current string to the destination.
-        for (size_t i = 0; i < arg_len && remaining_space > 0; ++i) {
-            dest[dest_len++] = (*arg)[i];
-            --remaining_space;
-        }
-    }
-
-    // Null-terminate the resulting string.
-    dest[dest_len] = '\0';
+    size_t len = 0;
+    size_t count = 0;
+    while(count < size && args[count] != NULL)
+    {
+        str_concat_char(dest, size, separator);
+        str_concat_string(dest, size, args[count]);
+        count++;
+        len++;
+    } 
 }
 
 
@@ -405,9 +414,15 @@ void str_concat_array(char *dest, size_t size, const char *args[], char separato
  */
 char *str_join_string(const char *str1, const char *str2, char separator) {
     // We determine the length of final string + 2 for the separator and null terminator.
-    char *strFinal = (char *)malloc(str_length(str1) + str_length(str2) + 2);
+    char *strFinal = (char *)malloc((str_length(str1) + str_length(str2) + 2)* sizeof(char));
+    if(strFinal == NULL)
+    {
+        printf("Memory not available");
+        return 0;
+    }
     char *tempPointer = strFinal;
-    while(*str1){
+    while(*str1)
+    {
         *strFinal = *str1;
         str1++;
         strFinal++;
@@ -426,6 +441,7 @@ char *str_join_string(const char *str1, const char *str2, char separator) {
 }
 
 char *str_join_array(const char *args[], char separator) {
+
     // We will figure out how many strings, and chars are stored in the array.
     int numStrings = 0;
     int numChar = 0;
@@ -435,7 +451,12 @@ char *str_join_array(const char *args[], char separator) {
         numChar = numChar + str_length(currentString);
         numStrings++;
     }
-    char *result = (char *)malloc(numChar + 1); // We create the string we will return.
+    char *result = (char *)malloc((numChar + 1) * sizeof(char)); // We create the string we will return.
+    if(result == NULL)
+    {
+        printf("Memory not available");
+        return 0;
+    }
     char *resultStart = result;
     int numStrings2 = 0;
     while(args[numStrings2] != NULL)
@@ -448,7 +469,8 @@ char *str_join_array(const char *args[], char separator) {
             index++;
             result++;
         }
-        if (args[numStrings2 + 1] != NULL) {
+        if (args[numStrings2 + 1] != NULL)
+        {
             *result = separator;
             result++;
         }
@@ -456,15 +478,4 @@ char *str_join_array(const char *args[], char separator) {
     }
     *result = '\0';
     return resultStart;
-}
-
-int powerOfTen(int exp)
-{
-    int result = 1;
-    while (exp > 0)
-    {
-        result = result * 10;
-        exp--;
-    }
-    return result;
 }
